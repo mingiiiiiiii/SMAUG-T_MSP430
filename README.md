@@ -1,0 +1,2 @@
+# PJT_MSP430_SMAUG-T
+SMAUG-T using NTT in 16-bit MSP430
