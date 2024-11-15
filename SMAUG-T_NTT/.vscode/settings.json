@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "kem.h": "c",
+        "rng.h": "c",
+        "evp.h": "c"
+    }
+}
