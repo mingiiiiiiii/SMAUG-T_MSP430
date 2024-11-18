@@ -27,6 +27,7 @@ int check_unity(uint32_t num) {
 }
 
 int main() {
+	//* range = 2 * q/2 * mu * n * k
 	int32_t range = 2097152;
 
 	for (; range < 2097152 + 1000000; range++) {

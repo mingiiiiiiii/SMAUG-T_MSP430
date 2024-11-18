@@ -4,9 +4,11 @@
 
 #include "parameters.h"
 
-void ntt(int32_t a[LWE_N]);
+#define NTT_Q (2424833)
+#define NTT_QINV (-2424831)
 
-void invntt_tomont(int32_t a[LWE_N]);
+void ntt(int32_t a[LWE_N]);
+void inv_ntt_tomont(int32_t a[LWE_N]);
 int32_t montgomery_reduce(int64_t a);
 
 #endif
