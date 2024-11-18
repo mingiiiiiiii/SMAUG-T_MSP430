@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -18,21 +17,15 @@ int check_low(uint32_t num) {
 	return 0;
 }
 
-int check_unity(uint32_t num) {
-	for (double i = 2; i++; i < num) {
-		if ((int)pow(i, 512.0) % num == 1) {
-			return 1;
-		}
-	}
-}
-
 int main() {
 	//* range = 2 * q/2 * mu * n * k
 	int32_t range = 2097152;
 
-	for (; range < 2097152 + 1000000; range++) {
+	for (; range < 2097152 + 4000000; range++) {
 		if (is_prime(range) && check_low(range)) {
-			printf("%d\n", range);
+			printf("find prime = %d\n", range);
+			printf("%d in hex = 0x%08X\n\n", range, range);
+			break;
 		}
 	}
 	return 0;
