@@ -7,7 +7,6 @@
 
 #include "ntt.h"
 #include "parameters.h"
-#include "toomcook.h"
 
 typedef struct {
 	int16_t coeffs[LWE_N];

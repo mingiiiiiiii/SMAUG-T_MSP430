@@ -1,8 +1,7 @@
 #include "indcpa.h"
 
 #include "cbd.h"
-// #include "randombytes.h"
-#include "rng.h"
+#include "randombytes.h"
 
 /*************************************************
  * Name:        genRx_vec
@@ -45,7 +44,7 @@ void indcpa_keypair(uint8_t pk[PUBLICKEY_BYTES], uint8_t sk[PKE_SECRETKEY_BYTES]
 	memset(&sk_tmp, 0, sizeof(secret_key));
 
 	uint8_t seed[CRYPTO_BYTES + PKSEED_BYTES] = {0};
-	randombytes_aes(seed, CRYPTO_BYTES);
+	randombytes(seed, CRYPTO_BYTES);
 #if CRYPTO_BYTES + PKSEED_BYTES != 64
 #error "This implementation assumes CRYPTO_BYTES + PKSEED_BYTES to be 64"
 #endif
@@ -86,7 +85,7 @@ void indcpa_enc(uint8_t ctxt[CIPHERTEXT_BYTES], const uint8_t pk[PUBLICKEY_BYTES
 	memset(&r, 0, sizeof(polyvec));
 
 	if (seed == NULL)
-		randombytes_aes(seed_r, DELTA_BYTES);
+		randombytes(seed_r, DELTA_BYTES);
 	else
 		cmov(seed_r, seed, DELTA_BYTES, 1);
 	genRx_vec(&r, seed_r);

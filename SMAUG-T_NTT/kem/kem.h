@@ -6,8 +6,7 @@
 #include "indcpa.h"
 #include "key.h"
 #include "parameters.h"
-// #include "randombytes.h"
-#include "rng.h"
+#include "randombytes.h"
 #include "verify.h"
 
 void crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
