@@ -1,0 +1,216 @@
+##IAR Ninja build file
+
+
+#Rules
+rule COMPILER_XCL
+  command = "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\XclFileGenerator.exe" $xclcommand -f "$rspfile_name"
+  description = IAR_NEW_TOOL+++COMPILER_XCL+++$in
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+rule INDEXER
+  command = "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\SourceIndexer.exe" $flags
+  depfile = $out.dep
+  description = IAR_NEW_TOOL+++INDEXER+++$out
+
+rule MAKEBROWSE
+  command = "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\makeBrowseData.exe" $flags
+  description = IAR_NEW_TOOL+++MAKEBROWSE+++$out
+
+rule PDBLINK
+  command = "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\PbdLink.exe" $flags
+  description = IAR_NEW_TOOL+++PDBLINK+++$out
+
+
+
+#Build steps
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\cbd.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\cbd.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ciphertext.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ciphertext.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\dg.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\dg.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\fips202.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\fips202.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hash.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hash.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hwt.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hwt.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\indcpa.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\indcpa.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\io.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\io.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\kem.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\kem.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\key.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\key.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\main.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\main.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ntt.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ntt.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\pack.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\pack.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\poly.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\poly.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\randombytes.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\randombytes.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\toomcook.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\toomcook.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.xcl : COMPILER_XCL 
+  xclcommand = -source_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\verify.c -xcl_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.xcl -macro_file C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.tmp -icc_path "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\bin\icc430.exe" -u8_wrapper "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\common\bin\iarconvert.exe"
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\verify.c -o C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\Debug\Obj\ --debug -D__MSP430F6779A__ -e --double=32 --dlib_config "C$:\Program$ Files\IAR$ Systems\Embedded$ Workbench$ 9.1\430\lib\dlib\dl430xlsfn.h" --core=430X --data_model=small -Ohs --multiplier=32 --hw_workaround=CPU40 --code_model=large --predef_macros C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.tmp
+  rspfile_name = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.xcl.rsp
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\cbd.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ciphertext.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\dg.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\fips202.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hash.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\hwt.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\indcpa.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\io.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\kem.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\key.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\main.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\ntt.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\pack.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\poly.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\randombytes.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\toomcook.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.pbi : INDEXER C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.xcl |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\verify.c
+  flags = -out=C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.pbi -f C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.xcl
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbw : MAKEBROWSE C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbd
+  flags = C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbd -output C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbw
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part0.pbi : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.pbi |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part0.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\cbd.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ciphertext.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\dg.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\fips202.pbi
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part1.pbi : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.pbi |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part1.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hash.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\hwt.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\indcpa.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\io.pbi
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part2.pbi : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.pbi |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part2.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\kem.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\key.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\main.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\ntt.pbi
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part3.pbi : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.pbi |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part3.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\pack.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\poly.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\randombytes.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\toomcook.pbi
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part4.pbi : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part4.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\verify.pbi
+
+build C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbd : PDBLINK C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part0.pbi |  $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part1.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part2.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part3.pbi $
+C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part4.pbi
+  flags = -M C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook.pbd C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part0.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part1.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part2.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part3.pbi C$:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_toomcook\BrowseInfo\MSP430_C_toomcook_part4.pbi
+

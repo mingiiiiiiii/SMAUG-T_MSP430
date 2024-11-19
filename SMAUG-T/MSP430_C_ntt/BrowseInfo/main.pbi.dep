@@ -1,0 +1,34 @@
+C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\BrowseInfo\main.pbi: \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\main.c \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\io430.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\io430f6779a.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\intrinsics.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\stdint.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\lib\dlib\dl430xlsfn.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\DLib_Product.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\xencoding_limits.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\DLib_Threads.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\stdio.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\ysizet.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\ystdio.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\string.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\kem.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\ciphertext.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\parameters.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\poly.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\stddef.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\ntt.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\hash.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\fips202.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\indcpa.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\hwt.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\430\inc\dlib\c\stdlib.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\io.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\key.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\dg.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\randombytes.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\verify.h \
+  C:\Users\mingi\Documents\GitHub\PJT_MSP430_SMAUG-T\SMAUG-T\MSP430_C_ntt\pack.h

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>5</fileVersion>
+    <fileChecksum>3803904878</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\randombytes.h</file>
+            <file>$PROJ_DIR$\verify.c</file>
+            <file>$PROJ_DIR$\poly.c</file>
+            <file>$PROJ_DIR$\pack.h</file>
+            <file>$PROJ_DIR$\parameters.h</file>
+            <file>$PROJ_DIR$\poly.h</file>
+            <file>$PROJ_DIR$\randombytes.c</file>
+            <file>$PROJ_DIR$\kem.c</file>
+            <file>$PROJ_DIR$\pack.c</file>
+            <file>$PROJ_DIR$\indcpa.h</file>
+            <file>$PROJ_DIR$\hwt.h</file>
+            <file>$PROJ_DIR$\io.h</file>
+            <file>$PROJ_DIR$\indcpa.c</file>
+            <file>$PROJ_DIR$\io.c</file>
+            <file>$PROJ_DIR$\main.c</file>
+            <file>$PROJ_DIR$\hash.c</file>
+            <file>$PROJ_DIR$\dg.h</file>
+            <file>$PROJ_DIR$\hash.h</file>
+            <file>$PROJ_DIR$\dg.c</file>
+            <file>$PROJ_DIR$\fips202.c</file>
+            <file>$PROJ_DIR$\fips202.h</file>
+            <file>$PROJ_DIR$\verify.h</file>
+            <file>$PROJ_DIR$\kem.h</file>
+            <file>$PROJ_DIR$\ntt.h</file>
+            <file>$PROJ_DIR$\key.c</file>
+            <file>$PROJ_DIR$\ntt.c</file>
+            <file>$PROJ_DIR$\key.h</file>
+            <file>$PROJ_DIR$\ciphertext.c</file>
+            <file>$PROJ_DIR$\hwt.c</file>
+            <file>$PROJ_DIR$\cbd.h</file>
+            <file>$PROJ_DIR$\api.h</file>
+            <file>$PROJ_DIR$\ciphertext.h</file>
+            <file>$PROJ_DIR$\cbd.c</file>
+        </outputs>
+        <forcedrebuild>
+            <name>[REBUILD_ALL]</name>
+        </forcedrebuild>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>XLINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>
