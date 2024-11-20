@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>3952939031</Checksum>
+        <Checksum>2092363921</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>1</MixedMode>
@@ -63,7 +63,13 @@
     </DataLog>
     <Breakpoints2>
         <Bp0>_ 1 "STD_CODE2" "{$PROJ_DIR$\main.c}.31.2" 0 0 1 "" 0 ""</Bp0>
-        <Count>1</Count>
+        <Bp1>_ 1 "STD_CODE2" "{$PROJ_DIR$\main.c}.20.2" 0 0 1 "" 0 ""</Bp1>
+        <Bp2>_ 1 "STD_CODE2" "{$PROJ_DIR$\main.c}.23.2" 0 0 1 "" 0 ""</Bp2>
+        <Bp3>_ 1 "STD_CODE2" "{$PROJ_DIR$\main.c}.26.2" 0 0 1 "" 0 ""</Bp3>
+        <Bp4>_ 1 "STD_CODE2" "{$PROJ_DIR$\kem.c}.16.2" 0 0 1 "" 0 ""</Bp4>
+        <Bp5>_ 1 "STD_CODE2" "{$PROJ_DIR$\indcpa.c}.43.2" 0 0 1 "" 0 ""</Bp5>
+        <Bp6>_ 1 "STD_CODE2" "{$PROJ_DIR$\indcpa.c}.47.2" 0 0 1 "" 0 ""</Bp6>
+        <Count>7</Count>
     </Breakpoints2>
     <Interrupts>
         <Enabled>1</Enabled>
