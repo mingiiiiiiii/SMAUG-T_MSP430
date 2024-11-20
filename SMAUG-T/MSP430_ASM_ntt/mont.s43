@@ -1,0 +1,131 @@
+#include <msp430.h>
+
+; montgomery_reduce(int32_t *a, int32_t *b, int32_t *r)
+
+#define a_0 r4
+#define a_1 r5
+#define b_0 r6
+#define b_1 r7
+
+#define temp1 r9
+#define forloop r10
+
+mont macro a0, a1, b0, b1
+    mov    a0, &MPYS32L
+    mov    a1, &MPYS32H
+    mov    b0, &OP2L
+    mov    b1, &OP2H
+    ; result in RES0 ~ RES3
+
+    mov    &RES0, &MPYS
+    mov    &RES1, temp1
+    mov    &RES2, a0
+    mov    &RES3, a1
+    
+    ; compute low
+    mov    #0xFFDB, &OP2
+    add    &RESLO, temp1
+    
+    ; compute high
+    mov    temp1, &MPYS32H
+    mov    #0x0001, &OP2L
+    mov    #0x0025, &OP2H
+
+    sub    &RES2, a0 
+    subc   &RES3, a1
+
+    endm
+
+; ntt multiplication 
+PUBLIC ntt_mul_asm
+RSEG CODE
+
+ntt_mul_asm:
+    push.w  r4
+    push.w  r5
+    push.w  r6
+    push.w  r7
+    push.w  r8
+    push.w  r9
+    push.w  r10
+
+    mov     r12, forloop
+    add     #1024, forloop
+  
+loop_start_1:
+    mov     0(r13), a_0
+    mov     2(r13), a_1
+  
+    mov     0(r14), b_0
+    mov     2(r14), b_1
+  
+    mont    a_0, a_1, b_0, b_1 
+  
+    mov     a_0, 0(r12)   ; save result to r12(result)
+    mov     a_1, 2(r12)  
+  
+    add     #4, r12
+    add     #4, r13
+    add     #4, r14
+  
+    cmp     forloop, r12
+    jn      loop_start_1
+  
+loop_end_1:
+    pop.w   r10
+    pop.w   r9
+    pop.w   r8
+    pop.w   r7
+    pop.w   r6
+    pop.w   r5
+    pop.w   r4
+  
+    RETA
+
+; ntt multiplication accumulation
+PUBLIC ntt_mul_acc_asm
+RSEG CODE
+
+ntt_mul_acc_asm:
+    push.w  r4
+    push.w  r5
+    push.w  r6
+    push.w  r7
+    push.w  r8
+    push.w  r9
+    push.w  r10
+
+    mov     r12, forloop
+    add     #1024, forloop
+  
+loop_start_2:
+    mov     0(r13), a_0
+    mov     2(r13), a_1
+  
+    mov     0(r14), b_0
+    mov     2(r14), b_1
+  
+    mont    a_0, a_1, b_0, b_1 
+
+    add     a_0, 0(r12)   ; save result to r14(res)
+    addc    a_1, 2(r12)  
+  
+    add     #4, r12
+    add     #4, r13
+    add     #4, r14
+  
+    cmp     forloop, r12
+    jn      loop_start_2
+  
+loop_end_2:
+    pop.w   r10
+    pop.w   r9
+    pop.w   r8
+    pop.w   r7
+    pop.w   r6
+    pop.w   r5
+    pop.w   r4
+  
+    RETA
+
+END

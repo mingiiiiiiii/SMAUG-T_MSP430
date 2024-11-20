@@ -1,0 +1,365 @@
+#include <msp430.h>
+
+; ct_ntt_merging_asm(int32_t *a)
+
+#define a0_0 r4
+#define a0_1 r5
+
+#define a1_0 r6
+#define a1_1 r7
+
+#define a2_0 r8
+#define a2_1 r9
+
+#define a3_0 r10
+#define a3_1 r11
+
+#define ptr r12
+#define temp0 r13
+#define temp1 r14
+#define forstop r15
+
+mont macro a0, a1, b0, b1
+    mov    a0, &MPYS32L
+    mov    a1, &MPYS32H
+    mov    b0, &OP2L
+    mov    b1, &OP2H
+    ; result in RES0 ~ RES3
+
+    mov    &RES0, &MPYS
+    mov    &RES1, temp1
+    mov    &RES2, a0
+    mov    &RES3, a1
+    
+    ; compute low
+    mov    #0xFFDB, &OP2
+    add    &RESLO, temp1
+    
+    ; compute high
+    mov    temp1, &MPYS32H
+    mov    #0x0001, &OP2L
+    mov    #0x0025, &OP2H
+
+    sub    &RES2, a0 
+    subc   &RES3, a1
+
+    endm
+
+ct_butter_fly macro w0_0, w0_1, w1_0, w1_1, zeta0_0, zeta0_1
+    mont   w1_0, w1_1, zeta0_0, zeta0_1
+    
+    mov    w0_0, temp0
+    mov    w0_1, temp1
+    
+    sub    w1_0, w0_0
+    subc   w1_1, w0_1   ; r[j+len] = r[j] - t
+    
+    add    temp0, w1_0
+    addc   temp1, w1_1  ; r[j]  = r[j] + t
+    
+    endm       
+         
+ntt_ct_merging_2 macro zeta1_0, zeta1_1, zeta2_0, zeta2_1, zeta3_0, zeta3_1, off1, off2, off3, off4, off5, off6, off7, off8
+    mov    off1(ptr), a0_0
+    mov    off2(ptr), a0_1
+    mov    off3(ptr), a1_0
+    mov    off4(ptr), a1_1
+    mov    off5(ptr), a2_0
+    mov    off6(ptr), a2_1
+    mov    off7(ptr), a3_0
+    mov    off8(ptr), a3_1
+    
+    ct_butter_fly    a0_0, a0_1, a2_0, a2_1, zeta1_0, zeta1_1   ; 0, 2 changed
+    ct_butter_fly    a1_0, a1_1, a3_0, a3_1, zeta1_0, zeta1_1   ; 1, 3 changed
+    
+    ct_butter_fly    a2_0, a2_1, a3_0, a3_1, zeta2_0, zeta2_1   ; 2, 3 changed
+    ct_butter_fly    a0_0, a0_1, a1_0, a1_1, zeta3_0, zeta3_1   ; 1, 0 changed
+    
+    mov    a3_0, off1(ptr)
+    mov    a3_1, off2(ptr)
+    mov    a2_0, off3(ptr)
+    mov    a2_1, off4(ptr)
+    mov    a1_0, off5(ptr)
+    mov    a1_1, off6(ptr)
+    mov    a0_0, off7(ptr)
+    mov    a0_1, off8(ptr)
+    
+    add    #4, ptr
+    
+    endm        
+
+ntt_ct_last_merging_2 macro zeta1_0, zeta1_1, zeta2_0, zeta2_1, zeta3_0, zeta3_1, off1, off2, off3, off4, off5, off6, off7, off8
+    mov    off1(ptr), a0_0
+    mov    off2(ptr), a0_1
+    mov    off3(ptr), a1_0
+    mov    off4(ptr), a1_1
+    mov    off5(ptr), a2_0
+    mov    off6(ptr), a2_1
+    mov    off7(ptr), a3_0
+    mov    off8(ptr), a3_1
+    
+    ct_butter_fly    a0_0, a0_1, a2_0, a2_1, zeta1_0, zeta1_1   ; 0, 2 changed
+    ct_butter_fly    a1_0, a1_1, a3_0, a3_1, zeta1_0, zeta1_1   ; 1, 3 changed
+    
+    ct_butter_fly    a2_0, a2_1, a3_0, a3_1, zeta2_0, zeta2_1   ; 2, 3 changed
+    ct_butter_fly    a0_0, a0_1, a1_0, a1_1, zeta3_0, zeta3_1   ; 1, 0 changed
+    
+    mov    a3_0, off1(ptr)
+    mov    a3_1, off2(ptr)
+    mov    a2_0, off3(ptr)
+    mov    a2_1, off4(ptr)
+    mov    a1_0, off5(ptr)
+    mov    a1_1, off6(ptr)
+    mov    a0_0, off7(ptr)
+    mov    a0_1, off8(ptr)
+    
+    add    #16, ptr
+    
+    endm                 
+         
+         
+PUBLIC ct_ntt_merging_asm       ; make the main label visible outside this module
+RSEG CODE              ; place program in 'CODE' segment
+
+ct_ntt_merging_asm:
+    push.w  r4        
+    push.w  r5
+    push.w  r6
+    push.w  r7
+    push.w  r8
+    push.w  r9
+    push.w  r10
+    push.w  r11
+
+    mov     ptr, forstop
+    add     #256, forstop
+
+layer12_merge:
+    ntt_ct_merging_2 #0x78D6, #0x0000, #0xC829, #0x000A, #0x2359, #0xFFFC, 0, 2, 256, 258, 512, 514, 768, 770
+    cmp     forstop, ptr
+    jn      layer12_merge
+                 
+    sub     #256, ptr
+    sub     #192, forstop
+
+layer34_merge:
+poly34_1:         
+    ntt_ct_merging_2 #0x7143, #0x0004, #0xAEA7, #0x000D, #0xF240, #0xFFFB, 0, 2, 64, 66, 128, 130, 192, 194
+    cmp     forstop, ptr
+    jn      poly34_1
+    add     #192, ptr
+    add     #256, forstop
+         
+poly34_2:
+    ntt_ct_merging_2 #0x1AEB, #0x0003, #0xAEFD, #0xFFF7, #0x6710, #0x0008, 0, 2, 64, 66, 128, 130, 192, 194         
+    cmp     forstop, ptr
+    jn      poly34_2
+    add     #192, ptr
+    add     #256, forstop
+         
+poly34_3:
+    ntt_ct_merging_2 #0x7411, #0xFFFF, #0x61B2, #0xFFFD, #0x0780, #0x0004, 0, 2, 64, 66, 128, 130, 192, 194
+    cmp     forstop, ptr
+    jn      poly34_3
+    add     #192, ptr
+    add     #256, forstop
+         
+poly34_4:
+    ntt_ct_merging_2 #0xFAA7, #0xFFFF, #0x3055, #0x0011, #0xFFFF, #0xFFFF, 0, 2, 64, 66, 128, 130, 192, 194
+    cmp     forstop, ptr
+    jn      poly34_4
+         
+    sub     #832, ptr
+    sub     #816, forstop
+
+layer56_merge:
+poly56_1:
+    ntt_ct_merging_2 #0xC1EB, #0x000B, #0x14C2, #0x0003, #0xD5FD, #0x0009, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_1
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_2:
+    ntt_ct_merging_2 #0xFCBC, #0x0001, #0x28B5, #0xFFF1, #0x591B, #0x000A, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_2
+    add     #48, ptr
+    add     #64, forstop
+         
+poly56_3:
+    ntt_ct_merging_2 #0xB567, #0x000B, #0x42E1, #0xFFF6, #0xEAEB, #0x0011, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_3
+    add     #48, ptr
+    add     #64, forstop         
+         
+poly56_4:
+    ntt_ct_merging_2 #0x1AB8, #0xFFF1, #0x1104, #0x0008, #0xA700, #0xFFFA, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_4
+    add     #48, ptr
+    add     #64, forstop
+         
+poly56_5:
+    ntt_ct_merging_2 #0xE143, #0xFFF1, #0xA6A1, #0xFFF3, #0x401C, #0xFFFE, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_5
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_6:
+    ntt_ct_merging_2 #0xEA84, #0xFFFE, #0xFD3A, #0x0010, #0x0FC6, #0x0005, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_6
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_7:
+    ntt_ct_merging_2 #0x03C8, #0xFFF9, #0xB212, #0xFFFB, #0x7FE4, #0xFFFB, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_7
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_8:
+    ntt_ct_merging_2 #0x0025, #0x0000, #0x5489, #0xFFFD, #0xFF00, #0xFFFF, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_8
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_9:
+    ntt_ct_merging_2 #0xA155, #0xFFEF, #0xEAAF, #0x000C, #0xBBF2, #0xFFF6, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_9
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_10:
+    ntt_ct_merging_2 #0x1C0C, #0xFFFC, #0x66AF, #0x0000, #0xB867, #0xFFFD, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_10
+    add     #48, ptr
+    add     #64, forstop
+         
+poly56_11:
+    ntt_ct_merging_2 #0x398A, #0xFFEF, #0x4362, #0x000B, #0x8407, #0xFFED, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_11
+    add     #48, ptr
+    add     #64, forstop  
+         
+poly56_12:
+    ntt_ct_merging_2 #0xC5DD, #0x0000, #0xC830, #0xFFF3, #0x2500, #0x0000, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_12
+    add     #48, ptr
+    add     #64, forstop
+         
+poly56_13:
+    ntt_ct_merging_2 #0x121E, #0x0008, #0x5571, #0xFFF6, #0x0C1B, #0x0003, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_13
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_14:
+    ntt_ct_merging_2 #0xE41F, #0xFFFA, #0x8A74, #0xFFFD, #0xDCFB, #0x000C, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_14
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_15:
+    ntt_ct_merging_2 #0x8912, #0xFFEE, #0x1DC8, #0xFFFA, #0x1F23, #0xFFF3, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_15
+    add     #48, ptr
+    add     #64, forstop
+
+poly56_16:
+    ntt_ct_merging_2 #0x0000, #0xFFFF, #0x1279, #0x0006, #0x0007, #0x0003, 0, 2, 16, 18, 32, 34, 48, 50
+    cmp     forstop, ptr
+    jn      poly56_16
+         
+    sub     #976, ptr
+
+layer78_merge:
+    ntt_ct_last_merging_2 #0x914C, #0xFFFB, #0xE453, #0xFFFE, #0xE358, #0x0001, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x8D60, #0x0007, #0x20A3, #0x0006, #0x8D64, #0xFFF0, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x828B, #0xFFF3, #0xC50C, #0x0011, #0x6BAC, #0x000C, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x3592, #0x000C, #0xD044, #0xFFFD, #0xEA9C, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x142E, #0xFFFD, #0xBA9B, #0x0011, #0xC900, #0xFFEF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xAEAF, #0x000C, #0xBBF5, #0x0003, #0x9C3F, #0xFFFC, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x4110, #0xFFF7, #0x86C8, #0xFFF5, #0x1E00, #0x0010, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xAA70, #0xFFFF, #0xC152, #0xFFFA, #0xFFFC, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xEA6A, #0xFFFC, #0x07AB, #0x000A, #0xF2F0, #0x0007, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x2402, #0x0009, #0xD59B, #0x0009, #0x6AE2, #0x000E, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xEFD4, #0x000E, #0x850E, #0x0011, #0xAA10, #0xFFFB, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x70FC, #0xFFF2, #0x0F21, #0x0009, #0x0094, #0x0000, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x1B21, #0xFFFB, #0x8556, #0x0008, #0x7030, #0xFFF0, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x77FE, #0xFFF6, #0xE62A, #0x0006, #0x1774, #0x0003, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x0549, #0x0010, #0x4877, #0xFFFB, #0x907D, #0x0010, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xFFF0, #0xFFFF, #0x244A, #0x0004, #0x0000, #0xFFFC, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x1EAB, #0x0003, #0x5308, #0x000C, #0x57F3, #0x0002, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xCBBF, #0xFFFA, #0xA2D6, #0x000E, #0x646B, #0x0004, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x566B, #0x0002, #0x0B85, #0xFFFE, #0xABAA, #0xFFFD, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xAB86, #0xFFEF, #0x440F, #0xFFFB, #0x9C01, #0x000F, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x1436, #0xFFFC, #0x9A85, #0xFFF3, #0x0070, #0xFFF9, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xA840, #0xFFEE, #0xF4E6, #0xFFF9, #0x3F17, #0xFFEF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x3C83, #0xFFFF, #0xC848, #0xFFEE, #0xFF90, #0xFFED, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x0250, #0x0000, #0x5224, #0xFFF5, #0xFC00, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x1557, #0xFFFD, #0xAABB, #0x000E, #0xEFC9, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xC0C2, #0x000B, #0x9ABC, #0x0001, #0xE19C, #0xFFF6, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x98A7, #0xFFF6, #0x0D87, #0x0008, #0x101E, #0x0000, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x5DD0, #0x000C, #0x20C1, #0xFFF4, #0x9400, #0x0000, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x21DD, #0x0012, #0x55C5, #0xFFFE, #0x306C, #0x000C, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x41F2, #0xFFF8, #0x29D0, #0xFFF6, #0x73EB, #0x000E, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x9128, #0x0010, #0x7721, #0x000D, #0x7C8D, #0xFFF1, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x0000, #0xFFF0, #0x49E3, #0xFFF3, #0x001C, #0x000C, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x4C1F, #0x000C, #0x4530, #0xFFEE, #0x357F, #0xFFF9, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x5FCC, #0x0009, #0x0A2D, #0xFFF3, #0xD647, #0x000B, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x8B56, #0xFFF0, #0x50B8, #0xFFF4, #0xBABB, #0x000D, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x91AC, #0x0011, #0x0441, #0x0002, #0xA9C0, #0xFFFE, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x2E14, #0xFFF8, #0xA9A8, #0xFFF3, #0x9007, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xAEA8, #0xFFF6, #0xBF4E, #0xFFF1, #0xC3F1, #0xFFEE, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x103D, #0x0012, #0x6C85, #0x0011, #0xDFF9, #0xFFFE, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x7002, #0xFFF4, #0x1522, #0xFFF6, #0xFFC0, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x6A15, #0xFFF3, #0x7AAC, #0x000C, #0x2EFD, #0x0010, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x01C1, #0x0009, #0x59AC, #0x0009, #0xAE1A, #0x0008, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xD399, #0x000C, #0x50D8, #0xFFF0, #0xA102, #0x0004, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xFC5E, #0x0006, #0xF20C, #0xFFFC, #0x0940, #0x0000, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x2122, #0x0005, #0x555C, #0xFFF4, #0x0307, #0x000A, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xFE42, #0x0001, #0x629D, #0xFFFF, #0x773F, #0x000C, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x4891, #0xFFFA, #0x8772, #0xFFFE, #0x07C9, #0x0006, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xF000, #0xFFFF, #0x449E, #0xFFF8, #0x0002, #0x000A, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xAAEA, #0xFFF0, #0x307B, #0x000C, #0x7F2F, #0x0000, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xBF24, #0xFFFF, #0x2D5A, #0x000C, #0x46AE, #0xFFFC, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x6AF0, #0x0006, #0xB851, #0x0005, #0xBAA1, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x8671, #0x0000, #0x40F2, #0xFFFE, #0xC009, #0xFFF6, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x361B, #0xFFFB, #0xA855, #0xFFF2, #0x0703, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x4078, #0x0000, #0x4E63, #0x000E, #0xF177, #0xFFF6, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x8305, #0xFFF5, #0x8487, #0xFFEF, #0xF908, #0x0007, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x5000, #0x0002, #0x2245, #0x000E, #0xC000, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x5714, #0xFFF9, #0xABAA, #0x000C, #0xFC90, #0xFFFE, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xC1AF, #0x000B, #0xABBF, #0xFFF4, #0x19C4, #0x0002, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xA741, #0xFFFD, #0xD86D, #0x0011, #0x01E0, #0x0001, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xCFAA, #0xFFEF, #0x0C15, #0xFFFB, #0x4000, #0x0009, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xDC83, #0x0010, #0x5C51, #0x000A, #0x06BB, #0x000A, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0xF236, #0x000F, #0x9D04, #0xFFF6, #0x3EAA, #0x0009, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x278D, #0xFFF2, #0x720A, #0xFFF9, #0xC8D6, #0xFFF5, 0, 2, 4, 6, 8, 10, 12, 14
+    ntt_ct_last_merging_2 #0x006F, #0x000B, #0x9E35, #0xFFED, #0x01BB, #0x0007, 0, 2, 4, 6, 8, 10, 12, 14
+
+    pop.w   r11
+    pop.w   r10
+    pop.w   r9
+    pop.w   r8
+    pop.w   r7
+    pop.w   r6
+    pop.w   r5
+    pop.w   r4
+
+    RETA
+          
+END

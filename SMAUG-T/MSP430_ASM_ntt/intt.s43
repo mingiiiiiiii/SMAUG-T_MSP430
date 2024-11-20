@@ -1,0 +1,623 @@
+#include <msp430.h>
+
+; ct_intt_merging_asm(int32_t *a)
+
+#define a0_0 r4
+#define a0_1 r5
+
+#define a1_0 r6
+#define a1_1 r7
+
+#define a2_0 r8
+#define a2_1 r9
+
+#define a3_0 r10
+#define a3_1 r11
+
+#define ptr r12
+#define temp0 r13
+#define temp1 r14
+#define forstop r15
+
+mont macro a0, a1, b0, b1
+    mov    a0, &MPYS32L
+    mov    a1, &MPYS32H
+    mov    b0, &OP2L
+    mov    b1, &OP2H
+    ; result in RES0 ~ RES3
+
+    mov    &RES0, &MPYS
+    mov    &RES1, temp1
+    mov    &RES2, a0
+    mov    &RES3, a1
+    
+    ; compute low
+    mov    #0xFFDB, &OP2
+    add    &RESLO, temp1
+    
+    ; compute high
+    mov    temp1, &MPYS32H
+    mov    #0x0001, &OP2L
+    mov    #0x0025, &OP2H
+
+    sub    &RES2, a0 
+    subc   &RES3, a1
+
+    endm
+
+ct_butter_fly macro w0_0, w0_1, w1_0, w1_1, zeta0_0, zeta0_1
+    mont   w1_0, w1_1, zeta0_0, zeta0_1
+    
+    mov    w0_0, temp0
+    mov    w0_1, temp1
+    
+    sub    w1_0, w0_0
+    subc   w1_1, w0_1   ;r[j+len] = r[j] - t
+    
+    add    temp0, w1_0
+    addc   temp1, w1_1  ;r[j]  = r[j] + t
+    
+    endm       
+
+ct_light_butter_fly macro w0_0, w0_1, w1_0, w1_1
+    mov    w0_0, temp0
+    mov    w0_1, temp1
+    
+    sub    w1_0, w0_0
+    subc   w1_1, w0_1   ;r[j+len] = r[j] - t
+    
+    add    temp0, w1_0
+    addc   temp1, w1_1  ;r[j]  = r[j] + t
+    
+    endm
+
+intt_ct_merging2 macro zeta1_0, zeta1_1, zeta2_0, zeta2_1, zeta3_0, zeta3_1, off1, off2, off3, off4, off5, off6, off7, off8, ptr_inc
+    mov    off1(ptr), a0_0
+    mov    off2(ptr), a0_1
+    mov    off3(ptr), a1_0
+    mov    off4(ptr), a1_1
+    mov    off5(ptr), a2_0
+    mov    off6(ptr), a2_1
+    mov    off7(ptr), a3_0
+    mov    off8(ptr), a3_1
+    
+    ct_butter_fly    a0_0, a0_1, a1_0, a1_1, zeta1_0, zeta1_1  ; 0, 1 changed
+    ct_butter_fly    a2_0, a2_1, a3_0, a3_1, zeta1_0, zeta1_1  ; 2, 3 changed
+    
+    ct_butter_fly    a1_0, a1_1, a3_0, a3_1, zeta2_0, zeta2_1  ; 3, 1 changed 
+    ct_butter_fly    a0_0, a0_1, a2_0, a2_1, zeta3_0, zeta3_1  ; 2, 0 changed 
+    
+    mov    a3_0, off1(ptr)
+    mov    a3_1, off2(ptr)
+    mov    a2_0, off3(ptr)
+    mov    a2_1, off4(ptr)
+    mov    a1_0, off5(ptr)
+    mov    a1_1, off6(ptr)
+    mov    a0_0, off7(ptr)
+    mov    a0_1, off8(ptr)
+    
+    add    #ptr_inc, ptr
+    
+    endm        
+
+intt_ct_merging2_light_butterfly macro zeta3_0, zeta3_1, off1, off2, off3, off4, off5, off6, off7, off8, ptr_inc
+    mov    off1(ptr), a0_0
+    mov    off2(ptr), a0_1
+    mov    off3(ptr), a1_0
+    mov    off4(ptr), a1_1
+    mov    off5(ptr), a2_0
+    mov    off6(ptr), a2_1
+    mov    off7(ptr), a3_0
+    mov    off8(ptr), a3_1
+    
+    ct_light_butter_fly    a0_0, a0_1, a1_0, a1_1   ; 0, 1 changed
+    ct_light_butter_fly    a2_0, a2_1, a3_0, a3_1   ; 2, 3 changed
+    
+    ct_light_butter_fly    a1_0, a1_1, a3_0, a3_1   ; 3, 1 changed
+    ct_butter_fly          a0_0, a0_1, a2_0, a2_1, zeta3_0, zeta3_1  ; 0, 2 changed
+    
+    mov    a3_0, off1(ptr)
+    mov    a3_1, off2(ptr)
+    mov    a2_0, off3(ptr)
+    mov    a2_1, off4(ptr)
+    mov    a1_0, off5(ptr)
+    mov    a1_1, off6(ptr)
+    mov    a0_0, off7(ptr)
+    mov    a0_1, off8(ptr)
+    
+    add    #ptr_inc, ptr
+    
+    endm
+
+last_twist macro twist1_0, twist1_1, off1, off2
+    mov off1(ptr), a0_0
+    mov off2(ptr), a0_1
+    
+    mont a0_0, a0_1, twist1_0, twist1_1
+    
+    mov a0_0, off1(ptr)
+    mov a0_1, off2(ptr)
+    
+    endm
+
+PUBLIC ct_intt_merging_asm       ; make the main label visible outside this module
+RSEG CODE              ; place program in 'CODE' segment
+
+ct_intt_merging_asm:
+    push.w  r4        
+    push.w  r5
+    push.w  r6
+    push.w  r7
+    push.w  r8
+    push.w  r9
+    push.w  r10
+    push.w  r11
+    
+    MOV     ptr, forstop
+    ADD     #1024, forstop
+         
+layer12_merge:
+    intt_ct_merging2_light_butterfly #0x872A, #0xFFFF, 0, 2, 4, 6, 8, 10, 12, 14, 16 
+    cmp     forstop, ptr
+    jn      layer12_merge
+                 
+    sub     #1024, ptr  ; forstop = 1024 (not changed)
+
+layer34_merge:
+poly34_1:         
+    intt_ct_merging2_light_butterfly #0x872A, #0xFFFF, 0, 2, 16, 18, 32, 34, 48, 50, 64    
+    cmp     forstop, ptr
+    jn      poly34_1
+    sub     #1024, ptr
+         
+poly34_2:
+    intt_ct_merging2 #0xDCA7, #0x0003, #0x0559, #0x0000, #0x8BEF, #0x0000, 4, 6, 20, 22, 36, 38, 52, 54, 64
+    cmp     forstop, ptr
+    jn      poly34_2
+    sub     #1024, ptr
+         
+poly34_3:
+    intt_ct_merging2 #0x872A, #0xFFFF, #0xDCA7, #0x0003, #0x37D7, #0xFFF5, 8, 10, 24, 26, 40, 42, 56, 58, 64
+    cmp     forstop, ptr
+    jn      poly34_3
+    sub     #1024, ptr
+         
+poly34_4:
+    intt_ct_merging2 #0x37D7, #0xFFF5, #0xE515, #0xFFFC, #0x8EBD, #0xFFFB, 12, 14, 28, 30, 44, 46, 60, 62, 64
+    cmp     forstop, ptr
+    jn      poly34_4
+    sub     #1024, ptr
+
+layer56_merge:
+poly56_1:
+    intt_ct_merging2_light_butterfly #0x872A, #0xFFFF, 0, 2, 64, 66, 128, 130, 192, 194, 256
+    cmp     forstop, ptr
+    jn      poly56_1
+    sub     #1024, ptr
+
+poly56_2:
+    intt_ct_merging2 #0x0001, #0x0000, #0x0000, #0x0001, #0x76EE, #0x0011, 4, 6, 68, 70, 132, 134, 196, 198, 256
+    cmp     forstop, ptr
+    jn      poly56_2
+    sub     #1024, ptr
+         
+poly56_3:
+    intt_ct_merging2 #0x0559, #0x0000, #0x0001, #0x0000, #0xCFAB, #0xFFEE, 8, 10, 72, 74, 136, 138, 200, 202, 256
+    cmp     forstop, ptr
+    jn      poly56_3
+    sub     #1024, ptr         
+         
+poly56_4:
+    intt_ct_merging2 #0x98F0, #0xFFF7, #0xFFDB, #0xFFFF, #0xFC38, #0x0006, 12, 14, 76, 78, 140, 142, 204, 206, 256
+    cmp     forstop, ptr
+    jn      poly56_4
+    sub     #1024, ptr
+         
+poly56_5:
+    intt_ct_merging2 #0xDCA7, #0x0003, #0x0559, #0x0000, #0x8BEF, #0x0000, 16, 18, 80, 82, 144, 146, 208, 210, 256
+    cmp     forstop, ptr
+    jn      poly56_5
+    sub     #1024, ptr
+
+poly56_6:
+    intt_ct_merging2 #0xF880, #0xFFFB, #0x3A23, #0xFFFF, #0xC676, #0x0010, 20, 22, 84, 86, 148, 150, 212, 214, 256
+    cmp     forstop, ptr
+    jn      poly56_6
+    sub     #1024, ptr
+
+poly56_7:
+    intt_ct_merging2 #0xE515, #0xFFFC, #0x98F0, #0xFFF7, #0x5103, #0x0008, 24, 26, 88, 90, 152, 154, 216, 218, 256
+    cmp     forstop, ptr
+    jn      poly56_7
+    sub     #1024, ptr
+
+poly56_8:
+    intt_ct_merging2 #0x0DC0, #0x0004, #0xE548, #0x000E, #0x4A99, #0xFFF4, 28, 30, 92, 94, 156, 158, 220, 222, 256
+    cmp     forstop, ptr
+    jn      poly56_8
+    sub     #1024, ptr
+
+poly56_9:
+    intt_ct_merging2 #0x872A, #0xFFFF, #0xDCA7, #0x0003, #0x37D7, #0xFFF5, 32, 34, 96, 98, 160, 162, 224, 226, 256
+    cmp     forstop, ptr
+    jn      poly56_9
+    sub     #1024, ptr
+
+poly56_10:
+    intt_ct_merging2 #0xCFAB, #0xFFEE, #0x1BE1, #0x0005, #0xEDE2, #0xFFF7, 36, 38, 100, 102, 164, 166, 228, 230, 256
+    cmp     forstop, ptr
+    jn      poly56_10
+    sub     #1024, ptr
+         
+poly56_11:
+    intt_ct_merging2 #0x8BEF, #0x0000, #0xF880, #0xFFFB, #0x9E4E, #0x0002, 40, 42, 104, 106, 168, 170, 232, 234, 256
+    cmp     forstop, ptr
+    jn      poly56_11
+    sub     #1024, ptr 
+         
+poly56_12:
+    intt_ct_merging2 #0x5103, #0x0008, #0x157C, #0x0001, #0x1EBD, #0x000E, 44, 46, 108, 110, 172, 174, 236, 238, 256
+    cmp     forstop, ptr
+    jn      poly56_12
+    sub     #1024, ptr
+         
+poly56_13:
+    intt_ct_merging2 #0x37D7, #0xFFF5, #0xE515, #0xFFFC, #0x8EBD, #0xFFFB, 48, 50, 112, 114, 176, 178, 240, 242, 256
+    cmp     forstop, ptr
+    jn      poly56_13
+    sub     #1024, ptr
+
+poly56_14:
+    intt_ct_merging2 #0x9E4E, #0x0002, #0xE3F4, #0x0003, #0x5EAB, #0x0010, 52, 54, 116, 118, 180, 182, 244, 246, 256
+    cmp     forstop, ptr
+    jn      poly56_14
+    sub     #1024, ptr
+
+poly56_15:
+    intt_ct_merging2 #0x8EBD, #0xFFFB, #0x0DC0, #0x0004, #0x5159, #0xFFF2, 56, 58, 120, 122, 184, 186, 248, 250, 256
+    cmp     forstop, ptr
+    jn      poly56_15
+    sub     #1024, ptr
+
+poly56_16:
+    intt_ct_merging2 #0x5159, #0xFFF2, #0x0344, #0xFFFE, #0x3E15, #0xFFF4, 60, 62, 124, 126, 188, 190, 252, 254, 256
+    cmp     forstop, ptr
+    jn      poly56_16
+    sub     #1024, ptr
+
+layer78_merge:        
+    intt_ct_merging2_light_butterfly #0x872A, #0xFFFF, 0, 2, 256, 258, 512, 514, 768, 770, 0
+    intt_ct_merging2 #0xFFF9, #0xFFFC, #0xFF91, #0xFFF4, #0xD873, #0x000D,  4,   6,  260, 262, 516, 518,  772,  774, 0
+    intt_ct_merging2 #0x0000, #0x0001, #0xFFF9, #0xFFFC, #0xED87, #0xFFF9,  8,   10, 264, 266, 520, 522,  776,  778, 0
+    intt_ct_merging2 #0x0100, #0x0000, #0x0000, #0x0010, #0x6ED8, #0xFFEF,  12,  14, 268, 270, 524, 526,  780,  782, 0
+    intt_ct_merging2 #0x0001, #0x0000, #0x0000, #0x0001, #0x76EE, #0x0011,  16,  18, 272, 274, 528, 530,  784,  786, 0
+    intt_ct_merging2 #0xDB00, #0xFFFF, #0x1000, #0x0000, #0xB76F, #0x0005,  20,  22, 276, 278, 532, 534,  788,  790, 0
+    intt_ct_merging2 #0xFFDB, #0xFFFF, #0x0100, #0x0000, #0xAB77, #0x0002,  24,  26, 280, 282, 536, 538,  792,  794, 0
+    intt_ct_merging2 #0x5900, #0x0005, #0x0010, #0x0000, #0xFAB7, #0xFFEF,  28,  30, 284, 286, 540, 542,  796,  798, 0
+    intt_ct_merging2 #0x0559, #0x0000, #0x0001, #0x0000, #0xCFAB, #0xFFEE,  32,  34, 288, 290, 544, 546,  800,  802, 0
+    intt_ct_merging2 #0x2305, #0xFFF3, #0xB000, #0xFFFD, #0x7CFB, #0x000A,  36,  38, 292, 294, 548, 550,  804,  806, 0
+    intt_ct_merging2 #0x3A23, #0xFFFF, #0xDB00, #0xFFFF, #0x37D0, #0x000C,  40,  42, 296, 298, 552, 554,  808,  810, 0
+    intt_ct_merging2 #0xF03A, #0xFFFA, #0xFDB0, #0xFFFF, #0xC37D, #0x0000,  44,  46, 300, 302, 556, 558,  812,  814, 0
+    intt_ct_merging2 #0x98F0, #0xFFF7, #0xFFDB, #0xFFFF, #0xFC38, #0x0006,  48,  50, 304, 306, 560, 562,  816,  818, 0
+    intt_ct_merging2 #0x4799, #0x0002, #0x8FFE, #0x000B, #0xEFC3, #0xFFED,  52,  54, 308, 310, 564, 566,  820,  822, 0
+    intt_ct_merging2 #0xE548, #0x000E, #0x5900, #0x0005, #0xEEFC, #0xFFF7,  56,  58, 312, 314, 568, 570,  824,  826, 0
+    intt_ct_merging2 #0xA6E5, #0xFFF5, #0x5590, #0x0000, #0xBEF0, #0x0008,  60,  62, 316, 318, 572, 574,  828,  830, 0
+    intt_ct_merging2 #0xDCA7, #0x0003, #0x0559, #0x0000, #0x8BEF, #0x0000,  64,  66, 320, 322, 576, 578,  832,  834, 0
+    intt_ct_merging2 #0xE0DD, #0x000C, #0x3056, #0x0010, #0x58BF, #0x0002,  68,  70, 324, 326, 580, 582,  836,  838, 0
+    intt_ct_merging2 #0x1BE1, #0x0005, #0x2305, #0xFFF3, #0x758C, #0x0002,  72,  74, 328, 330, 584, 586,  840,  842, 0
+    intt_ct_merging2 #0x801C, #0x0004, #0xA230, #0xFFF3, #0x6759, #0x0009,  76,  78, 332, 334, 588, 590,  844,  846, 0
+    intt_ct_merging2 #0xF880, #0xFFFB, #0x3A23, #0xFFFF, #0xC676, #0x0010,  80,  82, 336, 338, 592, 594,  848,  850, 0
+    intt_ct_merging2 #0x7BF9, #0x0012, #0x03A2, #0xFFF9, #0x2C67, #0xFFF3,  84,  86, 340, 342, 596, 598,  852,  854, 0
+    intt_ct_merging2 #0x157C, #0x0001, #0xF03A, #0xFFFA, #0x02C6, #0xFFEF,  88,  90, 344, 346, 600, 602,  856,  858, 0
+    intt_ct_merging2 #0x1515, #0xFFEE, #0x8F04, #0x000D, #0x102C, #0xFFF1,  92,  94, 348, 350, 604, 606,  860,  862, 0
+    intt_ct_merging2 #0xE515, #0xFFFC, #0x98F0, #0xFFF7, #0x5103, #0x0008,  96,  98, 352, 354, 608, 610,  864,  866, 0
+    intt_ct_merging2 #0xF3E5, #0xFFFC, #0x798F, #0xFFFF, #0x9510, #0xFFF9, 100, 102, 356, 358, 612, 614,  868,  870, 0
+    intt_ct_merging2 #0xE3F4, #0x0003, #0x4799, #0x0002, #0x9951, #0xFFFF, 104, 106, 360, 362, 616, 618,  872,  874, 0
+    intt_ct_merging2 #0xBFE4, #0x0001, #0x547A, #0x0010, #0xA995, #0xFFFD, 108, 110, 364, 366, 620, 622,  876,  878, 0
+    intt_ct_merging2 #0x0DC0, #0x0004, #0xE548, #0x000E, #0x4A99, #0xFFF4, 112, 114, 368, 370, 624, 626,  880,  882, 0
+    intt_ct_merging2 #0x440E, #0x0009, #0x6E54, #0xFFEE, #0x74AA, #0x000F, 116, 118, 372, 374, 628, 630,  884,  886, 0
+    intt_ct_merging2 #0x0344, #0xFFFE, #0xA6E5, #0xFFF5, #0xD74B, #0x000E, 120, 122, 376, 378, 632, 634,  888,  890, 0
+    intt_ct_merging2 #0x2A03, #0xFFF6, #0xCA6E, #0xFFF3, #0x7D75, #0x000C, 124, 126, 380, 382, 636, 638,  892,  894, 0
+    intt_ct_merging2 #0x872A, #0xFFFF, #0xDCA7, #0x0003, #0x37D7, #0xFFF5, 128, 130, 384, 386, 640, 642,  896,  898, 0
+    intt_ct_merging2 #0xED87, #0xFFF9, #0x0DCA, #0xFFF0, #0x237D, #0xFFEF, 132, 134, 388, 390, 644, 646,  900,  902, 0
+    intt_ct_merging2 #0x76EE, #0x0011, #0xE0DD, #0x000C, #0xE238, #0x0005, 136, 138, 392, 394, 648, 650,  904,  906, 0
+    intt_ct_merging2 #0xAB77, #0x0002, #0xBE0E, #0x0007, #0xDE23, #0xFFED, 140, 142, 396, 398, 652, 654,  908,  910, 0
+    intt_ct_merging2 #0xCFAB, #0xFFEE, #0x1BE1, #0x0005, #0xEDE2, #0xFFF7, 144, 146, 400, 402, 656, 658,  912,  914, 0
+    intt_ct_merging2 #0x37D0, #0x000C, #0x01BE, #0xFFFE, #0xDEDE, #0xFFFA, 148, 150, 404, 406, 660, 662,  916,  918, 0
+    intt_ct_merging2 #0xFC38, #0x0006, #0x801C, #0x0004, #0x4DEE, #0x0004, 152, 154, 408, 410, 664, 666,  920,  922, 0
+    intt_ct_merging2 #0xEEFC, #0xFFF7, #0x8802, #0x0009, #0xE4DF, #0x0004, 156, 158, 412, 414, 668, 670,  924,  926, 0
+    intt_ct_merging2 #0x8BEF, #0x0000, #0xF880, #0xFFFB, #0x9E4E, #0x0002, 160, 162, 416, 418, 672, 674,  928,  930, 0
+    intt_ct_merging2 #0x758C, #0x0002, #0xBF88, #0xFFFF, #0xC9E5, #0x0004, 164, 166, 420, 422, 676, 678,  932,  934, 0
+    intt_ct_merging2 #0xC676, #0x0010, #0x7BF9, #0x0012, #0xBC9E, #0xFFF4, 168, 170, 424, 426, 680, 682,  936,  938, 0
+    intt_ct_merging2 #0x02C6, #0xFFEF, #0x57C0, #0x0011, #0xEBCA, #0x0003, 172, 174, 428, 430, 684, 686,  940,  942, 0
+    intt_ct_merging2 #0x5103, #0x0008, #0x157C, #0x0001, #0x1EBD, #0x000E, 176, 178, 432, 434, 688, 690,  944,  946, 0
+    intt_ct_merging2 #0x9951, #0xFFFF, #0x5158, #0x0009, #0xD1EC, #0x0007, 180, 182, 436, 438, 692, 694,  948,  950, 0
+    intt_ct_merging2 #0x4A99, #0xFFF4, #0x1515, #0xFFEE, #0xBD1F, #0x0009, 184, 186, 440, 442, 696, 698,  952,  954, 0
+    intt_ct_merging2 #0xD74B, #0x000E, #0x5151, #0xFFF3, #0xEBD2, #0x0002, 188, 190, 444, 446, 700, 702,  956,  958, 0
+    intt_ct_merging2 #0x37D7, #0xFFF5, #0xE515, #0xFFFC, #0x8EBD, #0xFFFB, 192, 194, 448, 450, 704, 706,  960,  962, 0
+    intt_ct_merging2 #0xE238, #0x0005, #0x3E51, #0xFFF4, #0xA8EC, #0x0006, 196, 198, 452, 454, 708, 710,  964,  966, 0
+    intt_ct_merging2 #0xEDE2, #0xFFF7, #0xF3E5, #0xFFFC, #0xAA8F, #0x0009, 200, 202, 456, 458, 712, 714,  968,  970, 0
+    intt_ct_merging2 #0x4DEE, #0x0004, #0x3F3E, #0xFFF4, #0xEAA9, #0x0002, 204, 206, 460, 462, 716, 718,  972,  974, 0
+    intt_ct_merging2 #0x9E4E, #0x0002, #0xE3F4, #0x0003, #0x5EAB, #0x0010, 208, 210, 464, 466, 720, 722,  976,  978, 0
+    intt_ct_merging2 #0xBC9E, #0xFFF4, #0xFE3F, #0xFFF6, #0x95EB, #0x000C, 212, 214, 468, 470, 724, 726,  980,  982, 0
+    intt_ct_merging2 #0x1EBD, #0x000E, #0xBFE4, #0x0001, #0x595F, #0x000C, 216, 218, 472, 474, 728, 730,  984,  986, 0
+    intt_ct_merging2 #0xBD1F, #0x0009, #0xDBFE, #0xFFF6, #0x1596, #0x0003, 220, 222, 476, 478, 732, 734,  988,  990, 0
+    intt_ct_merging2 #0x8EBD, #0xFFFB, #0x0DC0, #0x0004, #0x5159, #0xFFF2, 224, 226, 480, 482, 736, 738,  992,  994, 0
+    intt_ct_merging2 #0xAA8F, #0x0009, #0x40DC, #0x0000, #0x5516, #0x000F, 228, 230, 484, 486, 740, 742,  996,  998, 0
+    intt_ct_merging2 #0x5EAB, #0x0010, #0x440E, #0x0009, #0x1551, #0xFFF3, 232, 234, 488, 490, 744, 746, 1000, 1002, 0
+    intt_ct_merging2 #0x595F, #0x000C, #0x3441, #0x0005, #0xE155, #0xFFFC, 236, 238, 492, 494, 748, 750, 1004, 1006, 0
+    intt_ct_merging2 #0x5159, #0xFFF2, #0x0344, #0xFFFE, #0x3E15, #0xFFF4, 240, 242, 496, 498, 752, 754, 1008, 1010, 0
+    intt_ct_merging2 #0x1551, #0xFFF3, #0xA034, #0xFFF6, #0xB3E1, #0xFFF3, 244, 246, 500, 502, 756, 758, 1012, 1014, 0
+    intt_ct_merging2 #0x3E15, #0xFFF4, #0x2A03, #0xFFF6, #0xEB3E, #0xFFFC, 248, 250, 504, 506, 760, 762, 1016, 1018, 0
+    intt_ct_merging2 #0xEB3E, #0xFFFC, #0x72A0, #0xFFF8, #0x6EB4, #0x0004, 252, 254, 508, 510, 764, 766, 1020, 1022, 0
+
+twist:
+    last_twist #0xEAAF, #0x000C,   0,    2
+    last_twist #0x7AAC, #0x000C,   4,    6
+    last_twist #0x1EAB, #0x0003,   8,    10
+    last_twist #0x07AB, #0x000A,   12,   14
+    last_twist #0xC1EB, #0x000B,   16,   18
+    last_twist #0x307B, #0x000C,   20,   22
+    last_twist #0x4C1F, #0x000C,   24,   26
+    last_twist #0x5308, #0x000C,   28,   30
+    last_twist #0x14C2, #0x0003,   32,   34
+    last_twist #0x4530, #0xFFEE,   36,   38
+    last_twist #0x914C, #0xFFFB,   40,   42
+    last_twist #0xE453, #0xFFFE,   44,   46
+    last_twist #0xF915, #0x0008,   48,   50
+    last_twist #0xFE45, #0xFFF8,   52,   54
+    last_twist #0xFF91, #0xFFF4,   56,   58
+    last_twist #0xFFE4, #0xFFF3,   60,   62
+    last_twist #0xFFF9, #0xFFFC,   64,   66
+    last_twist #0xFFFE, #0xFFF5,   68,   70
+    last_twist #0x0000, #0x0010,   72,   74
+    last_twist #0x0000, #0x0004,   76,   78
+    last_twist #0x0000, #0x0001,   80,   82
+    last_twist #0x4000, #0x0000,   84,   86
+    last_twist #0x1000, #0x0000,   88,   90
+    last_twist #0x0400, #0x0000,   92,   94
+    last_twist #0x0100, #0x0000,   96,   98
+    last_twist #0x0040, #0x0000,  100,  102
+    last_twist #0x0010, #0x0000,  104,  106
+    last_twist #0x0004, #0x0000,  108,  110
+    last_twist #0x0001, #0x0000,  112,  114
+    last_twist #0xC000, #0xFFF6,  116,  118
+    last_twist #0xB000, #0xFFFD,  120,  122
+    last_twist #0x6C00, #0xFFFF,  124,  126
+    last_twist #0xDB00, #0xFFFF,  128,  130
+    last_twist #0xF6C0, #0xFFFF,  132,  134
+    last_twist #0xFDB0, #0xFFFF,  136,  138
+    last_twist #0xFF6C, #0xFFFF,  140,  142
+    last_twist #0xFFDB, #0xFFFF,  144,  146
+    last_twist #0x3FF7, #0x0009,  148,  150
+    last_twist #0x8FFE, #0x000B,  152,  154
+    last_twist #0x63FF, #0xFFF0,  156,  158
+    last_twist #0x5900, #0x0005,  160,  162
+    last_twist #0x5640, #0x0001,  164,  166
+    last_twist #0x5590, #0x0000,  168,  170
+    last_twist #0x1564, #0x0000,  172,  174
+    last_twist #0x0559, #0x0000,  176,  178
+    last_twist #0xC156, #0xFFF6,  180,  182
+    last_twist #0x3056, #0x0010,  184,  186
+    last_twist #0x8C15, #0xFFF1,  188,  190
+    last_twist #0x2305, #0xFFF3,  192,  194
+    last_twist #0x88C1, #0xFFF3,  196,  198
+    last_twist #0xA230, #0xFFF3,  200,  202
+    last_twist #0xE88C, #0xFFFC,  204,  206
+    last_twist #0x3A23, #0xFFFF,  208,  210
+    last_twist #0x0E89, #0x0009,  212,  214
+    last_twist #0x03A2, #0xFFF9,  216,  218
+    last_twist #0xC0E9, #0x0010,  220,  222
+    last_twist #0xF03A, #0xFFFA,  224,  226
+    last_twist #0x3C0F, #0x0011,  228,  230
+    last_twist #0x8F04, #0x000D,  232,  234
+    last_twist #0x63C1, #0x0003,  236,  238
+    last_twist #0x98F0, #0xFFF7,  240,  242
+    last_twist #0xE63C, #0xFFFD,  244,  246
+    last_twist #0x798F, #0xFFFF,  248,  250
+    last_twist #0x1E64, #0x0009,  252,  254
+    last_twist #0x4799, #0x0002,  256,  258
+    last_twist #0x51E6, #0xFFF7,  260,  262
+    last_twist #0x547A, #0x0010,  264,  266
+    last_twist #0x951E, #0xFFF1,  268,  270
+    last_twist #0xE548, #0x000E,  272,  274
+    last_twist #0xB952, #0x0003,  276,  278
+    last_twist #0x6E54, #0xFFEE,  280,  282
+    last_twist #0x9B95, #0xFFFB,  284,  286
+    last_twist #0xA6E5, #0xFFF5,  288,  290
+    last_twist #0x29B9, #0xFFF4,  292,  294
+    last_twist #0xCA6E, #0xFFF3,  296,  298
+    last_twist #0x729C, #0x000F,  300,  302
+    last_twist #0xDCA7, #0x0003,  304,  306
+    last_twist #0x372A, #0x000A,  308,  310
+    last_twist #0x0DCA, #0xFFF0,  312,  314
+    last_twist #0x8373, #0x000E,  316,  318
+    last_twist #0xE0DD, #0x000C,  320,  322
+    last_twist #0xF837, #0xFFF9,  324,  326
+    last_twist #0xBE0E, #0x0007,  328,  330
+    last_twist #0x6F83, #0xFFEF,  332,  334
+    last_twist #0x1BE1, #0x0005,  336,  338
+    last_twist #0x06F8, #0xFFF8,  340,  342
+    last_twist #0x01BE, #0xFFFE,  344,  346
+    last_twist #0x0070, #0x0012,  348,  350
+    last_twist #0x801C, #0x0004,  352,  354
+    last_twist #0x2007, #0x0001,  356,  358
+    last_twist #0x8802, #0x0009,  360,  362
+    last_twist #0xE200, #0xFFEF,  364,  366
+    last_twist #0xF880, #0xFFFB,  368,  370
+    last_twist #0xFE20, #0xFFFE,  372,  374
+    last_twist #0xBF88, #0xFFFF,  376,  378
+    last_twist #0xEFE2, #0xFFFF,  380,  382
+    last_twist #0x7BF9, #0x0012,  384,  386
+    last_twist #0x5EFE, #0xFFFB,  388,  390
+    last_twist #0x57C0, #0x0011,  392,  394
+    last_twist #0x55F0, #0x0004,  396,  398
+    last_twist #0x157C, #0x0001,  400,  402
+    last_twist #0x455F, #0x0000,  404,  406
+    last_twist #0x5158, #0x0009,  408,  410
+    last_twist #0x5456, #0x0002,  412,  414
+    last_twist #0x1515, #0xFFEE,  416,  418
+    last_twist #0x4545, #0xFFF2,  420,  422
+    last_twist #0x5151, #0xFFF3,  424,  426
+    last_twist #0x9454, #0xFFF3,  428,  430
+    last_twist #0xE515, #0xFFFC,  432,  434
+    last_twist #0xF945, #0xFFF5,  436,  438
+    last_twist #0x3E51, #0xFFF4,  440,  442
+    last_twist #0xCF94, #0xFFF3,  444,  446
+    last_twist #0xF3E5, #0xFFFC,  448,  450
+    last_twist #0xFCF9, #0xFFF5,  452,  454
+    last_twist #0x3F3E, #0xFFF4,  456,  458
+    last_twist #0x8FD0, #0x000F,  460,  462
+    last_twist #0xE3F4, #0x0003,  464,  466
+    last_twist #0xF8FD, #0x0000,  468,  470
+    last_twist #0xFE3F, #0xFFF6,  472,  474
+    last_twist #0xFF90, #0x0006,  476,  478
+    last_twist #0xBFE4, #0x0001,  480,  482
+    last_twist #0x6FF9, #0x0000,  484,  486
+    last_twist #0xDBFE, #0xFFF6,  488,  490
+    last_twist #0x3700, #0x0010,  492,  494
+    last_twist #0x0DC0, #0x0004,  496,  498
+    last_twist #0x0370, #0x0001,  500,  502
+    last_twist #0x40DC, #0x0000,  504,  506
+    last_twist #0x1037, #0x0000,  508,  510
+    last_twist #0x440E, #0x0009,  512,  514
+    last_twist #0xD103, #0xFFEF,  516,  518
+    last_twist #0x3441, #0x0005,  520,  522
+    last_twist #0x0D10, #0xFFF8,  524,  526
+    last_twist #0x0344, #0xFFFE,  528,  530
+    last_twist #0x80D1, #0xFFFF,  532,  534
+    last_twist #0xA034, #0xFFF6,  536,  538
+    last_twist #0xA80D, #0xFFFD,  540,  542
+    last_twist #0x2A03, #0xFFF6,  544,  546
+    last_twist #0xCA81, #0x0006,  548,  550
+    last_twist #0x72A0, #0xFFF8,  552,  554
+    last_twist #0x1CA8, #0xFFFE,  556,  558
+    last_twist #0x872A, #0xFFFF,  560,  562
+    last_twist #0x61CB, #0x0012,  564,  566
+    last_twist #0xD873, #0x000D,  568,  570
+    last_twist #0xB61D, #0x000C,  572,  574
+    last_twist #0xED87, #0xFFF9,  576,  578
+    last_twist #0xBB62, #0x0007,  580,  582
+    last_twist #0x6ED8, #0xFFEF,  584,  586
+    last_twist #0xDBB6, #0xFFFB,  588,  590
+    last_twist #0x76EE, #0x0011,  592,  594
+    last_twist #0xDDBB, #0xFFF1,  596,  598
+    last_twist #0xB76F, #0x0005,  600,  602
+    last_twist #0xADDC, #0x000A,  604,  606
+    last_twist #0xAB77, #0x0002,  608,  610
+    last_twist #0xEADE, #0x0009,  612,  614
+    last_twist #0xFAB7, #0xFFEF,  616,  618
+    last_twist #0x3EAE, #0x0005,  620,  622
+    last_twist #0xCFAB, #0xFFEE,  624,  626
+    last_twist #0xF3EB, #0x0004,  628,  630
+    last_twist #0x7CFB, #0x000A,  632,  634
+    last_twist #0xDF3F, #0x000B,  636,  638
+    last_twist #0x37D0, #0x000C,  640,  642
+    last_twist #0x0DF4, #0x0003,  644,  646
+    last_twist #0xC37D, #0x0000,  648,  650
+    last_twist #0xF0DF, #0xFFF6,  652,  654
+    last_twist #0xFC38, #0x0006,  656,  658
+    last_twist #0xBF0E, #0x0001,  660,  662
+    last_twist #0xEFC3, #0xFFED,  664,  666
+    last_twist #0xBBF1, #0x0004,  668,  670
+    last_twist #0xEEFC, #0xFFF7,  672,  674
+    last_twist #0xFBBF, #0xFFFD,  676,  678
+    last_twist #0xBEF0, #0x0008,  680,  682
+    last_twist #0x2FBC, #0x0002,  684,  686
+    last_twist #0x8BEF, #0x0000,  688,  690
+    last_twist #0x62FC, #0x0009,  692,  694
+    last_twist #0x58BF, #0x0002,  696,  698
+    last_twist #0xD630, #0x0009,  700,  702
+    last_twist #0x758C, #0x0002,  704,  706
+    last_twist #0x9D63, #0x0000,  708,  710
+    last_twist #0x6759, #0x0009,  712,  714
+    last_twist #0x19D6, #0xFFF9,  716,  718
+    last_twist #0xC676, #0x0010,  720,  722
+    last_twist #0xB19D, #0xFFF1,  724,  726
+    last_twist #0x2C67, #0xFFF3,  728,  730
+    last_twist #0x0B1A, #0x0006,  732,  734
+    last_twist #0x02C6, #0xFFEF,  736,  738
+    last_twist #0x40B2, #0x000E,  740,  742
+    last_twist #0x102C, #0xFFF1,  744,  746
+    last_twist #0x440B, #0xFFFC,  748,  750
+    last_twist #0x5103, #0x0008,  752,  754
+    last_twist #0x5441, #0x000B,  756,  758
+    last_twist #0x9510, #0xFFF9,  760,  762
+    last_twist #0x6544, #0xFFFE,  764,  766
+    last_twist #0x9951, #0xFFFF,  768,  770
+    last_twist #0xA654, #0xFFF6,  772,  774
+    last_twist #0xA995, #0xFFFD,  776,  778
+    last_twist #0x2A65, #0xFFF6,  780,  782
+    last_twist #0x4A99, #0xFFF4,  784,  786
+    last_twist #0xD2A6, #0xFFF3,  788,  790
+    last_twist #0x74AA, #0x000F,  792,  794
+    last_twist #0x5D2A, #0xFFF1,  796,  798
+    last_twist #0xD74B, #0x000E,  800,  802
+    last_twist #0xF5D3, #0x000C,  804,  806
+    last_twist #0x7D75, #0x000C,  808,  810
+    last_twist #0xDF5D, #0xFFF9,  812,  814
+    last_twist #0x37D7, #0xFFF5,  816,  818
+    last_twist #0x8DF6, #0x0006,  820,  822
+    last_twist #0x237D, #0xFFEF,  824,  826
+    last_twist #0x88DF, #0xFFF2,  828,  830
+    last_twist #0xE238, #0x0005,  832,  834
+    last_twist #0x788E, #0x0001,  836,  838
+    last_twist #0xDE23, #0xFFED,  840,  842
+    last_twist #0xB789, #0x0004,  844,  846
+    last_twist #0xEDE2, #0xFFF7,  848,  850
+    last_twist #0x7B79, #0x0010,  852,  854
+    last_twist #0xDEDE, #0xFFFA,  856,  858
+    last_twist #0x37B8, #0x0011,  860,  862
+    last_twist #0x4DEE, #0x0004,  864,  866
+    last_twist #0x937B, #0xFFEE,  868,  870
+    last_twist #0xE4DF, #0x0004,  872,  874
+    last_twist #0x7938, #0x000A,  876,  878
+    last_twist #0x9E4E, #0x0002,  880,  882
+    last_twist #0x2793, #0xFFEE,  884,  886
+    last_twist #0xC9E5, #0x0004,  888,  890
+    last_twist #0xF279, #0xFFF7,  892,  894
+    last_twist #0xBC9E, #0xFFF4,  896,  898
+    last_twist #0xAF28, #0x000F,  900,  902
+    last_twist #0xEBCA, #0x0003,  904,  906
+    last_twist #0x7AF2, #0xFFEE,  908,  910
+    last_twist #0x1EBD, #0x000E,  912,  914
+    last_twist #0x47AF, #0xFFFA,  916,  918
+    last_twist #0xD1EC, #0x0007,  920,  922
+    last_twist #0xF47B, #0x0001,  924,  926
+    last_twist #0xBD1F, #0x0009,  928,  930
+    last_twist #0xAF48, #0x000B,  932,  934
+    last_twist #0xEBD2, #0x0002,  936,  938
+    last_twist #0x3AF4, #0xFFEE,  940,  942
+    last_twist #0x8EBD, #0xFFFB,  944,  946
+    last_twist #0xA3AF, #0xFFF5,  948,  950
+    last_twist #0xA8EC, #0x0006,  952,  954
+    last_twist #0xAA3B, #0x0001,  956,  958
+    last_twist #0xAA8F, #0x0009,  960,  962
+    last_twist #0xAAA4, #0x000B,  964,  966
+    last_twist #0xEAA9, #0x0002,  968,  970
+    last_twist #0x7AAA, #0xFFF7,  972,  974
+    last_twist #0x5EAB, #0x0010,  976,  978
+    last_twist #0x57AB, #0x000D,  980,  982
+    last_twist #0x95EB, #0x000C,  984,  986
+    last_twist #0x657B, #0x000C,  988,  990
+    last_twist #0x595F, #0x000C,  992,  994
+    last_twist #0x5658, #0x000C,  996,  998
+    last_twist #0x1596, #0x0003, 1000, 1002
+    last_twist #0x4565, #0xFFEE, 1004, 1006
+    last_twist #0x5159, #0xFFF2, 1008, 1010
+    last_twist #0x5456, #0xFFF3, 1012, 1014
+    last_twist #0x5516, #0x000F, 1016, 1018
+    last_twist #0x5545, #0xFFF1, 1020, 1022 
+
+    pop.w   r11
+    pop.w   r10
+    pop.w   r9
+    pop.w   r8
+    pop.w   r7
+    pop.w   r6
+    pop.w   r5
+    pop.w   r4
+
+    RETA
+          
+END       

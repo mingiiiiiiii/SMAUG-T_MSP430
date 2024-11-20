@@ -5,248 +5,113 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\ciphertext.c</file>
-            <file>$PROJ_DIR$\dg.h</file>
-            <file>$PROJ_DIR$\ciphertext.h</file>
-            <file>$PROJ_DIR$\cbd.h</file>
-            <file>$PROJ_DIR$\io.h</file>
-            <file>$PROJ_DIR$\indcpa.c</file>
-            <file>$PROJ_DIR$\kem.h</file>
-            <file>$PROJ_DIR$\ntt.c</file>
-            <file>$PROJ_DIR$\toomcook.h</file>
-            <file>$PROJ_DIR$\main.c</file>
-            <file>$PROJ_DIR$\key.h</file>
-            <file>$PROJ_DIR$\parameters.h</file>
-            <file>$PROJ_DIR$\verify.c</file>
-            <file>$PROJ_DIR$\kem.c</file>
-            <file>$PROJ_DIR$\hash.h</file>
-            <file>$PROJ_DIR$\pack.c</file>
             <file>$PROJ_DIR$\fips202.h</file>
-            <file>$PROJ_DIR$\io.c</file>
-            <file>$PROJ_DIR$\hash.c</file>
-            <file>$PROJ_DIR$\randombytes.c</file>
-            <file>$PROJ_DIR$\toomcook.c</file>
-            <file>$PROJ_DIR$\fips202.c</file>
-            <file>$PROJ_DIR$\verify.h</file>
-            <file>$PROJ_DIR$\indcpa.h</file>
-            <file>$PROJ_DIR$\pack.h</file>
-            <file>$PROJ_DIR$\poly.c</file>
-            <file>$PROJ_DIR$\ntt.h</file>
-            <file>$PROJ_DIR$\hwt.c</file>
-            <file>$PROJ_DIR$\hwt.h</file>
-            <file>$PROJ_DIR$\key.c</file>
-            <file>$PROJ_DIR$\poly.h</file>
-            <file>$PROJ_DIR$\randombytes.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\pack.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\indcpa.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\dg.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\randombytes.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\hash.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\hwt.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\kem.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\ntt.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\poly.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\cbd.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\ciphertext.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\fips202.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\io.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\key.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\toomcook.r43</file>
-            <file>$PROJ_DIR$\Debug\Obj\verify.r43</file>
-            <file>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.d43</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\ycheck.h</file>
-            <file>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.ulp</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
-            <file>$PROJ_DIR$\api.h</file>
-            <file>$PROJ_DIR$\cbd.c</file>
-            <file>$PROJ_DIR$\dg.c</file>
+            <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+            <file>$TOOLKIT_DIR$\inc\io430.h</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\stdlib.h</file>
-            <file>$TOOLKIT_DIR$\inc\io430f6779a.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\string.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
+            <file>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.ulp</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ycheck.h</file>
             <file>$TOOLKIT_DIR$\inc\dlib\c\stddef.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\xencoding_limits.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Product.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\string.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\yvals.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdint.h</file>
             <file>$PROJ_DIR$\Debug\List\MSP430_C_toomcook.map</file>
             <file>$TOOLKIT_DIR$\config\linker\lnk430f6779a.xcl</file>
-            <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.r43</file>
-            <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
             <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Product.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\yvals.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\xencoding_limits.h</file>
-            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
-            <file>$TOOLKIT_DIR$\inc\io430.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
+            <file>$TOOLKIT_DIR$\inc\io430f6779a.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.r43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
+            <file>$PROJ_DIR$\key.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\verify.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\pack.r43</file>
+            <file>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.d43</file>
+            <file>$PROJ_DIR$\poly.h</file>
+            <file>$PROJ_DIR$\parameters.h</file>
+            <file>$PROJ_DIR$\hwt.c</file>
+            <file>$PROJ_DIR$\ntt.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\dg.r43</file>
+            <file>$PROJ_DIR$\verify.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\randombytes.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\fips202.r43</file>
+            <file>$PROJ_DIR$\poly.c</file>
+            <file>$PROJ_DIR$\kem.h</file>
+            <file>$PROJ_DIR$\randombytes.c</file>
+            <file>$PROJ_DIR$\hash.h</file>
+            <file>$PROJ_DIR$\io.c</file>
+            <file>$PROJ_DIR$\indcpa.c</file>
+            <file>$PROJ_DIR$\ntt.h</file>
+            <file>$PROJ_DIR$\pack.c</file>
+            <file>$PROJ_DIR$\pack.h</file>
+            <file>$PROJ_DIR$\randombytes.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\ntt.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\cbd.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\kem.r43</file>
+            <file>$PROJ_DIR$\io.h</file>
+            <file>$PROJ_DIR$\key.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\poly.r43</file>
+            <file>$PROJ_DIR$\toomcook.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\hash.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\hwt.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\ciphertext.r43</file>
+            <file>$PROJ_DIR$\toomcook.c</file>
+            <file>$PROJ_DIR$\hash.c</file>
+            <file>$PROJ_DIR$\hwt.h</file>
+            <file>$PROJ_DIR$\main.c</file>
+            <file>$PROJ_DIR$\kem.c</file>
+            <file>$PROJ_DIR$\verify.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\io.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\key.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\indcpa.r43</file>
+            <file>$PROJ_DIR$\indcpa.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\toomcook.r43</file>
+            <file>$PROJ_DIR$\api.h</file>
+            <file>$PROJ_DIR$\cbd.c</file>
+            <file>$PROJ_DIR$\cbd.h</file>
+            <file>$PROJ_DIR$\ciphertext.c</file>
+            <file>$PROJ_DIR$\dg.c</file>
+            <file>$PROJ_DIR$\dg.h</file>
+            <file>$PROJ_DIR$\ciphertext.h</file>
+            <file>$PROJ_DIR$\fips202.c</file>
         </outputs>
         <file>
-            <name>$PROJ_DIR$\ciphertext.c</name>
+            <name>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.d43</name>
             <outputs>
                 <tool>
-                    <name>ICC430</name>
-                    <file> 43</file>
+                    <name>XLINK</name>
+                    <file> 13</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
-                    <name>ICC430</name>
-                    <file> 2 50 51 70 67 68 69 71 72 11 30 61 66 53 60 26 8 14 16 24 59 22</file>
+                    <name>XLINK</name>
+                    <file> 14 45 54 30 33 51 52 63 61 46 62 53 44 24 49 32 65 23 20</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\indcpa.c</name>
+            <name>$PROJ_DIR$\hwt.c</name>
             <outputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 33</file>
+                    <file> 52</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 23 2 50 51 70 67 68 69 71 72 11 30 61 66 53 60 26 8 14 16 28 57 59 4 10 1 31 22 24 3</file>
+                    <file> 57 12 5 11 21 15 8 7 9 3 19 10 0 6 27 16 18</file>
                 </tool>
             </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\ntt.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 40</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 26 50 51 70 67 68 69 71 72 11</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\main.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 39</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 73 58 65 50 51 70 67 68 69 71 72 53 66 60 59 6 2 11 30 61 26 8 14 16 23 28 57 4 10 1 31 22 24</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\verify.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 48</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 61 51 70 67 68 69 71 72 66 50 22 11</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\kem.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 38</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 6 2 50 51 70 67 68 69 71 72 11 30 61 66 53 60 26 8 14 16 23 28 57 59 4 10 1 31 22 24</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\pack.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 32</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 24 50 51 70 67 68 69 71 72 53 66 60 59 11 30 61 26 8 22 57</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\io.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 45</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 4 57 51 70 67 68 69 71 72 66 2 50 11 30 61 53 60 26 8 10 1 59 16 31 22 28 24</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\hash.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 36</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 14 16 61 51 70 67 68 69 71 72 66 50 11</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\randombytes.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 35</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 31 61 51 70 67 68 69 71 72 66 50</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\toomcook.c</name>
-            <outputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 47</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICC430</name>
-                    <file> 8 50 51 70 67 68 69 71 72 11 59 66</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\fips202.c</name>
             <outputs>
                 <tool>
                     <name>ICC430</name>
@@ -256,7 +121,22 @@
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 16 61 51 70 67 68 69 71 72 66 50</file>
+                    <file> 40 12 5 11 21 15 8 7 9 27</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\verify.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 23</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 6 5 11 21 15 8 7 9 19 12 60 27</file>
                 </tool>
             </inputs>
         </file>
@@ -265,33 +145,138 @@
             <outputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 41</file>
+                    <file> 49</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 30 61 51 70 67 68 69 71 72 66 50 53 60 26 11 8 59</file>
+                    <file> 26 6 5 11 21 15 8 7 9 19 12 16 18 40 27 50 10</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\hwt.c</name>
+            <name>$PROJ_DIR$\randombytes.c</name>
             <outputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 37</file>
+                    <file> 32</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 28 50 51 70 67 68 69 71 72 57 66 59 16 61 11 53 60</file>
+                    <file> 43 6 5 11 21 15 8 7 9 19 12</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\io.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 61</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 47 3 5 11 21 15 8 7 9 19 72 12 27 26 6 16 18 40 50 22 71 10 0 43 60 57 42</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\indcpa.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 63</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 64 72 12 5 11 21 15 8 7 9 27 26 6 19 16 18 40 50 37 0 57 3 10 47 22 71 43 60 42 68</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\pack.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 24</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 42 12 5 11 21 15 8 7 9 16 19 18 10 27 26 6 40 50 60 3</file>
                 </tool>
             </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\key.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 62</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 22 12 5 11 21 15 8 7 9 16 19 18 71 10 0 6 27 26 40 50 43 60 57 3 42</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\toomcook.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 65</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 50 12 5 11 21 15 8 7 9 27 10 19</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\hash.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 51</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 37 0 6 5 11 21 15 8 7 9 19 12 27</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 53</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 2 17 1 12 5 11 21 15 8 7 9 16 19 18 10 35 72 27 26 6 40 50 37 0 64 57 3 47 22 71 43 60 42</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\kem.c</name>
             <outputs>
                 <tool>
                     <name>ICC430</name>
@@ -301,22 +286,7 @@
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 10 50 51 70 67 68 69 71 72 53 66 60 1 59 16 61 11 30 26 8 31 22 28 57 24</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\MSP430_C_toomcook.d43</name>
-            <outputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 62</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 63 42 43 34 44 36 37 33 45 38 46 39 40 32 41 35 47 48 64</file>
+                    <file> 35 72 12 5 11 21 15 8 7 9 27 26 6 19 16 18 40 50 37 0 64 57 3 10 47 22 71 43 60 42</file>
                 </tool>
             </inputs>
         </file>
@@ -325,13 +295,28 @@
             <outputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 42</file>
+                    <file> 45</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 3 50 51 70 67 68 69 71 72 53 66 60 30 61 26 11 8</file>
+                    <file> 68 12 5 11 21 15 8 7 9 16 19 18 26 6 40 27 50</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\ciphertext.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 54</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 72 12 5 11 21 15 8 7 9 27 26 6 19 16 18 40 50 37 0 42 10 60</file>
                 </tool>
             </inputs>
         </file>
@@ -340,13 +325,28 @@
             <outputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 34</file>
+                    <file> 30</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICC430</name>
-                    <file> 1 50 51 70 67 68 69 71 72 53 66 60 59 16 61 11 30 26 8 31 22</file>
+                    <file> 71 12 5 11 21 15 8 7 9 16 19 18 10 0 6 27 26 40 50 43 60</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fips202.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 33</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 0 6 5 11 21 15 8 7 9 19 12</file>
                 </tool>
             </inputs>
         </file>
@@ -355,11 +355,11 @@
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 49 62</file>
+                    <file> 13 25</file>
                 </tool>
                 <tool>
                     <name>ULP430</name>
-                    <file> 52</file>
+                    <file> 4</file>
                 </tool>
             </outputs>
         </file>
