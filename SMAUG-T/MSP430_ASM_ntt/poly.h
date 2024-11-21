@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "ntt.h"
 #include "parameters.h"
 
 typedef struct {

@@ -2675,6 +2675,9 @@
         <name>$PROJ_DIR$\indcpa.h</name>
     </file>
     <file>
+        <name>$PROJ_DIR$\intt.s43</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\io.c</name>
     </file>
     <file>
@@ -2699,6 +2702,9 @@
         <name>$PROJ_DIR$\mont.s43</name>
     </file>
     <file>
+        <name>$PROJ_DIR$\ntt.s43</name>
+    </file>
+    <file>
         <name>$PROJ_DIR$\pack.c</name>
     </file>
     <file>
@@ -2718,12 +2724,6 @@
     </file>
     <file>
         <name>$PROJ_DIR$\randombytes.h</name>
-    </file>
-    <file>
-        <name>$PROJ_DIR$\test_intt.s43</name>
-    </file>
-    <file>
-        <name>$PROJ_DIR$\test_ntt.s43</name>
     </file>
     <file>
         <name>$PROJ_DIR$\verify.c</name>

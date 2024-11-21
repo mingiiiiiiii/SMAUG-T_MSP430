@@ -39,35 +39,6 @@ void poly_sub(poly *r, const poly *a, const poly *b) {
 }
 
 /*************************************************
- * Name:        vec_vec_mult
- *
- * Description: Two vector of polynomials are multiplied in the NTT domain for
- *              q0 and q1, then transform back with inverse NTT into Rq0 and
- *              Rq1, and finally combined using Chinese Remainder Theorem (CRT).
- *
- * Arguments:   - poly *r: pointer to output polynomial
- *              - polyvec *a: pointer to input vector of polynomials
- *              - polyvec *b: pointer to input vector of polynomials
- **************************************************/
-// void vec_vec_mult(poly *r, const polyvec *a, const polyvec *b) {
-// 	unsigned int i;
-// 	for (i = 0; i < MODULE_RANK; i++)
-// 		poly_mul_acc(a->vec[i].coeffs, b->vec[i].coeffs, r->coeffs);
-// }
-
-void ntt_mul(int32_t *r, int32_t *a, int32_t *b) {
-	for (int i = 0; i < LWE_N; i++) {
-		r[i] = montgomery_reduce((int64_t)a[i] * b[i]);
-	}
-}
-
-void ntt_mul_acc(int32_t *r, int32_t *a, int32_t *b) {
-	for (int i = 0; i < LWE_N; i++) {
-		r[i] += montgomery_reduce((int64_t)a[i] * b[i]);
-	}
-}
-
-/*************************************************
  * Name:        vec_vec_mult_add
  *
  * Description: Multiply two vectors of polynomials and add the result to output
@@ -93,21 +64,16 @@ void vec_vec_mult_add(poly *r, const polyvec *a, const polyvec *b,
 			b_tmp[j] = (int32_t)(int16_t)(b->vec[i].coeffs[j]);
 		}
 
-		// ntt(al_tmp);
         ct_ntt_merging_asm(al_tmp);
-		// ntt(b_tmp);
         ct_ntt_merging_asm(b_tmp);
 
 		if (i == 0) {
-			// ntt_mul(res_tmp, al_tmp, b_tmp);
             ntt_mul_asm(res_tmp, al_tmp, b_tmp);
 		} else {
-			// ntt_mul_acc(res_tmp, al_tmp, b_tmp);
             ntt_mul_acc_asm(res_tmp, al_tmp, b_tmp);
 		}
 	}
 
-	// inv_ntt(res_tmp);
     ct_intt_merging_asm(res_tmp);
     
 	for (j = 0; j < LWE_N; ++j) {
@@ -134,7 +100,6 @@ void vec_vec_mult_add(poly *r, const polyvec *a, const polyvec *b,
 void matrix_vec_mult_add(polyvec *r, const polyvec a[MODULE_RANK],
 												 const polyvec *b) {
 	unsigned int i, j, k;
-	// polyvec at;
 
 	int32_t at_tmp[LWE_N] = {0x00};
 	int32_t b_tmp[MODULE_RANK][LWE_N] = {0x00};
@@ -145,7 +110,6 @@ void matrix_vec_mult_add(polyvec *r, const polyvec a[MODULE_RANK],
 		for (j = 0; j < LWE_N; j++) {
 			b_tmp[i][j] = b->vec[i].coeffs[j];
 		}
-		// ntt(b_tmp[i]);
         ct_ntt_merging_asm(b_tmp[i]);
 	}
 
@@ -155,19 +119,15 @@ void matrix_vec_mult_add(polyvec *r, const polyvec a[MODULE_RANK],
 				at_tmp[k] = (int32_t)(int16_t)(a[j].vec[i].coeffs[k] >> _16_LOG_Q);
 			}
 
-			// ntt(at_tmp);
             ct_ntt_merging_asm(at_tmp);
 
 			if (j == 0) {
-				// ntt_mul(res_tmp, at_tmp, b_tmp[j]);
                 ntt_mul_asm(res_tmp, at_tmp, b_tmp[j]);
 			} else {
-				// ntt_mul_acc(res_tmp, at_tmp, b_tmp[j]);
                 ntt_mul_acc_asm(res_tmp, at_tmp, b_tmp[j]);
 			}
 		}
 
-		// inv_ntt(res_tmp);
         ct_intt_merging_asm(res_tmp);
         
 		for (j = 0; j < LWE_N; ++j) {
@@ -191,19 +151,16 @@ void matrix_vec_mult_add(polyvec *r, const polyvec a[MODULE_RANK],
 void matrix_vec_mult_sub(polyvec *r, const polyvec a[MODULE_RANK],
 												 const polyvec *b) {
 	unsigned int i, j, k;
-	// polyvec al;
 	poly res;
 
 	int32_t al_tmp[LWE_N] = {0x00};
 	int32_t b_tmp[MODULE_RANK][LWE_N] = {0x00};
 	int32_t res_tmp[LWE_N] = {0x00};
 
-	//* ntt(b)
 	for (i = 0; i < MODULE_RANK; i++) {
 		for (j = 0; j < LWE_N; j++) {
 			b_tmp[i][j] = b->vec[i].coeffs[j];
 		}
-		// ntt(b_tmp[i]);
         ct_ntt_merging_asm(b_tmp[i]);
 	}
 
@@ -212,20 +169,16 @@ void matrix_vec_mult_sub(polyvec *r, const polyvec a[MODULE_RANK],
 			for (k = 0; k < LWE_N; ++k) {
 				al_tmp[k] = (int32_t)(int16_t)(a[i].vec[j].coeffs[k] >> _16_LOG_Q);
 			}
-
-			// ntt(al_tmp);
+            
             ct_ntt_merging_asm(al_tmp);   
-
-			if (j == 0) {
-				// ntt_mul(res_tmp, al_tmp, b_tmp[j]);
+			
+            if (j == 0) {
                 ntt_mul_asm(res_tmp, al_tmp, b_tmp[j]);
 			} else {
-				// ntt_mul_acc(res_tmp, al_tmp, b_tmp[j]);
                 ntt_mul_acc_asm(res_tmp, al_tmp, b_tmp[j]);
 			}
 		}
         
-		// inv_ntt(res_tmp);
         ct_intt_merging_asm(res_tmp);
 		
         for (j = 0; j < LWE_N; ++j) {

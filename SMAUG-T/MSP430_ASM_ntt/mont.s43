@@ -6,8 +6,8 @@
 #define a_1 r5
 #define b_0 r6
 #define b_1 r7
-
-#define temp1 r9
+#define const_temp r8
+#define temp r9
 #define forloop r10
 
 mont macro a0, a1, b0, b1
@@ -18,18 +18,18 @@ mont macro a0, a1, b0, b1
     ; result in RES0 ~ RES3
 
     mov    &RES0, &MPYS
-    mov    &RES1, temp1
+    mov    &RES1, temp
     mov    &RES2, a0
     mov    &RES3, a1
     
     ; compute low
     mov    #0xFFDB, &OP2
-    add    &RESLO, temp1
+    add    &RESLO, temp
     
     ; compute high
-    mov    temp1, &MPYS32H
+    mov    temp, &MPYS32H
     mov    #0x0001, &OP2L
-    mov    #0x0025, &OP2H
+    mov    const_temp, &OP2H
 
     sub    &RES2, a0 
     subc   &RES3, a1
@@ -51,6 +51,8 @@ ntt_mul_asm:
 
     mov     r12, forloop
     add     #1024, forloop
+    
+    mov     #0x0025, const_temp ; for mont
   
 loop_start_1:
     mov     0(r13), a_0
@@ -61,13 +63,13 @@ loop_start_1:
   
     mont    a_0, a_1, b_0, b_1 
   
-    mov     a_0, 0(r12)   ; save result to r12(result)
+    mov     a_0, 0(r12) ; save result to r12(result)
     mov     a_1, 2(r12)  
   
     add     #4, r12
     add     #4, r13
     add     #4, r14
-  
+
     cmp     forloop, r12
     jn      loop_start_1
   
@@ -97,6 +99,8 @@ ntt_mul_acc_asm:
 
     mov     r12, forloop
     add     #1024, forloop
+    
+    mov     #0x0025, const_temp ; for mont
   
 loop_start_2:
     mov     0(r13), a_0
@@ -107,7 +111,7 @@ loop_start_2:
   
     mont    a_0, a_1, b_0, b_1 
 
-    add     a_0, 0(r12)   ; save result to r14(res)
+    add     a_0, 0(r12) ; save result to r14(res)
     addc    a_1, 2(r12)  
   
     add     #4, r12
