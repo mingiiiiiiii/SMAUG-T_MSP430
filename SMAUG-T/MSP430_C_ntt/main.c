@@ -18,13 +18,13 @@ int main() {
 	uint8_t ss2[CRYPTO_BYTES] = {0};
 
 	crypto_kem_keypair(pk, sk);
-	// printf("Keygen_kem done\n");
+	printf("Keygen_kem done\n");
 
 	res = crypto_kem_enc(ctxt, ss, pk);
-	// printf("Encap done\n");
+	printf("Encap done\n");
 
 	res = crypto_kem_dec(ss2, ctxt, sk);
-	// printf("Decap done\n");
+	printf("Decap done\n");
 
 	if (res != 0) return 1;
 

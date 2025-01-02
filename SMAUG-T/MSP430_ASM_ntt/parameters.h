@@ -6,8 +6,8 @@
 #define LWE_N (1 << LOG_LWE_N)  // LWE dim and LWR dim
 
 // #define SMAUG_MODE 1            
-#define SMAUG_MODE 3            
-// #define SMAUG_MODE 5            
+// #define SMAUG_MODE 3            
+#define SMAUG_MODE 5            
 
 #if SMAUG_MODE == 1
 // #define SMAUG_NAMESPACE(s) cryptolab_smaug1_##s

@@ -2,6 +2,10 @@
 
 #include "cbd.h"
 #include "randombytes.h"
+#include "poly.h"
+
+//asm functions
+extern void ct_ntt_merging_asm(int32_t *a);
 
 /*************************************************
  * Name:        genRx_vec
@@ -89,12 +93,22 @@ void indcpa_enc(uint8_t ctxt[CIPHERTEXT_BYTES], const uint8_t pk[PUBLICKEY_BYTES
 	else
 		cmov(seed_r, seed, DELTA_BYTES, 1);
 	genRx_vec(&r, seed_r);
+     
+    unsigned int i, j;
+    int32_t r_tmp[MODULE_RANK][LWE_N] = {0x00};
+    //* ntt(r)
+	for (i = 0; i < MODULE_RANK; i++) {
+		for (j = 0; j < LWE_N; j++) {
+			r_tmp[i][j] = (int32_t)(int16_t)(r.vec[i].coeffs[j]);
+		}
+        ct_ntt_merging_asm(r_tmp[i]);
+	}
 
 	// Compute c1(x), c2(x)
 	ciphertext ctxt_tmp;
 	memset(&ctxt_tmp, 0, sizeof(ciphertext));
-	computeC1(&(ctxt_tmp.c1), pk_tmp.A, &r);
-	computeC2(&(ctxt_tmp.c2), mu, &pk_tmp.b, &r);
+	computeC1(&(ctxt_tmp.c1), pk_tmp.A, r_tmp);
+	computeC2(&(ctxt_tmp.c2), mu, &pk_tmp.b, r_tmp);
 
 	save_to_string(ctxt, &ctxt_tmp);
 }
@@ -132,7 +146,7 @@ void indcpa_dec(uint8_t delta[DELTA_BYTES], const uint8_t sk[PKE_SECRETKEY_BYTES
 		for (j = 0; j < LWE_N; ++j) c1_temp.vec[i].coeffs[j] <<= _16_LOG_P;
 
 	// Compute delta = (delta + c1^T * s)
-	vec_vec_mult_add(&delta_temp, &c1_temp, &sk_tmp, _16_LOG_P);
+	vec_vec_mult_add_2(&delta_temp, &c1_temp, &sk_tmp, _16_LOG_P);
 
 	// Compute delta = 2/p * delta
 	for (i = 0; i < LWE_N; ++i) {

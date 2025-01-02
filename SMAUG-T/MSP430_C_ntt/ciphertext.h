@@ -11,8 +11,8 @@ typedef struct Ciphertext {
     poly c2;
 } ciphertext;
 
-void computeC1(polyvec *c1, const polyvec A[MODULE_RANK], const polyvec *r);
+void computeC1(polyvec *c1, const polyvec A[MODULE_RANK], const int32_t r[MODULE_RANK][LWE_N]);
 void computeC2(poly *c2, const uint8_t delta[DELTA_BYTES], const polyvec *b,
-               const polyvec *r);
+               const int32_t r[MODULE_RANK][LWE_N]);
 
 #endif // SMAUG_CIPHERTEXT_H
